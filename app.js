@@ -14,8 +14,8 @@ app.use(cors({
     credentials: true
 }))
 
-const port = 80;
-
+const port = 3000;
+console.log("도착")
 app.post("/signup", controllers.signup);
 app.post("/login", controllers.login);
 app.get("/userinfo", controllers.userinfo);
