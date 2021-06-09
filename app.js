@@ -15,14 +15,15 @@ app.use(cors({
 }))
 
 const port = 3000;
+
 console.log("도착")
+
 app.post("/signup", controllers.signup);
 app.post("/login", controllers.login);
 app.get("/userinfo", controllers.userinfo);
 app.get("/logout", controllers.logout);
 
 let server;
-
 if(fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")){
 
   const privateKey = fs.readFileSync(__dirname + "/key.pem", "utf8");
