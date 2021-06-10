@@ -16,10 +16,12 @@ app.use(cors({
 
 const port = 3000;
 
+
 app.post("/signup", controllers.signup);
 app.post("/login", controllers.login);
 app.get("/userinfo", controllers.userinfo);
 app.get("/logout", controllers.logout);
+
 
 let server;
 if(fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")){

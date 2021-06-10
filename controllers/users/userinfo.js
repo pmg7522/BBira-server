@@ -5,6 +5,4 @@ dotenv.config();
 
 module.exports = (req, res) => {
 
-
-
 }
