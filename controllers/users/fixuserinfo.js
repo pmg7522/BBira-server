@@ -11,16 +11,15 @@ module.exports = async (req, res) => {
     const { email, nickname, phone, address, storename } = req.body
     
     if (!email || !nickname || !phone || !address || !storename) {
-        res.status(422).send({ "message": "Unprocessable Entity" })
+        res.status(422).send({ "message": "Fill in blank" })
     }
     else {
         await user.update({ nickname }, { where: { email: email } })
         const userStoreId = await user.findOne({ where: { email }})
         const storeId = userStoreId.dataValues.store_id
         await store.update({ phone, address, storename }, { where: { id: storeId } })
-        return res.status(205).send({ "message": "ok" })
+        return res.status(205).send({ "message": "Fixed" })
     }
-    
-    console.log("서버 담당 누구 ?")
+
     res.status(500).send({ "message": 'Internal Server Error' })
 }

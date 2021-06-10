@@ -13,6 +13,6 @@ module.exports = async (req, res) => {
         res.status(404).send({ message: "invalid user" });
       } else {
         req.session.userId = userInfo.id;
-        res.status(200).send({ message: "ok" });
+        res.status(200).send({ message: "login successed" });
       }
 }

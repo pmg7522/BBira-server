@@ -17,5 +17,7 @@ module.exports = {
 
     fixiteminfo: require('./stores/fixiteminfo'),
 
-    allstoredata: require('./stores/allstoredata')
+    allstore: require('./stores/allstore'),
+
+    mystore: require('./stores/mystore')
 }

@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
         const storeId = userInfo.dataValues.store_id
         await store.destroy({ where: { id: storeId }})
         await user.destroy({ where: { email }})
-        res.status(205).send({ "message": 'Reset Content' })
+        res.status(205).send({ "message": '재가입은 유료입니다.' })
     }
     else {
         res.status(500).send({ "message": "Internal Server Error" })

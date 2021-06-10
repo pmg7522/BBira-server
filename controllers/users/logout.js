@@ -5,5 +5,5 @@ dotenv.config();
 
 module.exports = (req, res) => {
     req.session.destroy();
-    res.status(200).send("ok");
+    res.status(200).send({ message: "logout successed" });
 }
