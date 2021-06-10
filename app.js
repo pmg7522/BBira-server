@@ -39,7 +39,7 @@ app.post("/signup", controllers.signup); // email, nickname, address, storename,
 app.post("/login", controllers.login); // email, password
 app.get("/logout", controllers.logout);
 app.post("/dropuser", controllers.dropuser); // email
-app.post("/userinfo", controllers.userinfo); // email
+app.get("/userinfo", controllers.userinfo);
 
 // stores //
 app.post("/fixiteminfo", controllers.fixiteminfo);
