@@ -1,9 +1,9 @@
-CREATE TABLE user (
+CREATE TABLE users (
   id INT AUTO_INCREMENT,
   nickname varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
   password varchar(255) NOT NULL,
-  store_id INT,
+  store_id INT AUTO_INCREMENT,
   PRIMARY KEY (id)
 );
 
@@ -38,16 +38,18 @@ CREATE TABLE tag_store (
 );
 
 
-ALTER TABLE user ADD FOREIGN KEY (store_id) REFERENCES store (id);
-ALTER TABLE item ADD FOREIGN KEY (store_id) REFERENCES store (id);
-ALTER TABLE item ADD FOREIGN KEY (store_id) REFERENCES store (id);
-ALTER TABLE tag_store ADD FOREIGN KEY (store_id) REFERENCES store (id);
-ALTER TABLE tag_store ADD FOREIGN KEY (tag_id) REFERENCES tag (id);
+ALTER TABLE users ADD FOREIGN KEY (store_id) REFERENCES stores (id);
+ALTER TABLE items ADD FOREIGN KEY (store_id) REFERENCES stores (id);
+ALTER TABLE tag_stores ADD FOREIGN KEY (store_id) REFERENCES stores (id);
+ALTER TABLE tag_stores ADD FOREIGN KEY (tag_id) REFERENCES tags (id);
 
 
-INSERT INTO user (email, nickname, password, store_id) VALUES ("BBira@gmail.com", "BBira", "1234", 1);
-INSERT INTO store (phone, storename, address) VALUES ("010-1234-5678", "shop", "강북");
--- INSERT INTO tag (tagname) VALUES ()
--- INSERT INTO item (itemname, itemphoto, itemdesc, itemprice) VALUES ()
+ALTER TABLE stores CHANGE COLUMN createdAt createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE stores CHANGE COLUMN updatedAt updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+INSERT INTO users (email, nickname, password, store_id) VALUES ("BBira@gmail.com", "BBira", "1234", 1);
+INSERT INTO stores (phone, storename, address) VALUES ("010-1234-5678", "shop", "강북");
+-- INSERT INTO tags (tagname) VALUES ()
+-- INSERT INTO items (itemname, itemphoto, itemdesc, itemprice) VALUES ()
 
 
