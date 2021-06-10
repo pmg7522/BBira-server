@@ -15,30 +15,15 @@ app.use(cors({
     credentials: true
 }))
 
-app.use(
-  session({
-    secret: 'BBira',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      domain: "localhost", // 클라이언트의 요청 도메인
-      path: '/',
-      maxAge: 24 * 6 * 60 * 10000,
-      sameSite: 'none',
-      httpOnly: true,
-      secure: true,
-    },
-  })
-);
-
-const port = 3000;
+const port = 3000; //배포환경시 80
 
 app.post("/fixuserinfo", controllers.fixuserinfo);
 app.post("/signup", controllers.signup);
 app.post("/login", controllers.login);
 app.get("/logout", controllers.logout);
-app.get("/userinfo", controllers.userinfo);
-app.get("/dropuser", controllers.dropuser);
+app.post("/dropuser", controllers.dropuser);
+app.post("/userinfo", controllers.userinfo);
+
 
 
 app.post("/fixiteminfo", controllers.fixiteminfo);

@@ -1,8 +1,8 @@
 CREATE TABLE users (
   id INT AUTO_INCREMENT,
-  nickname varchar(255) NOT NULL,
-  email varchar(255) NOT NULL,
-  password varchar(255) NOT NULL,
+  nickname varchar(255) DEFAULT '' NOT NULL,
+  email varchar(255) DEFAULT '' NOT NULL,
+  password varchar(255) DEFAULT '' NOT NULL,
   createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   store_id INT,
@@ -11,9 +11,9 @@ CREATE TABLE users (
 
 CREATE TABLE stores (
   id INT AUTO_INCREMENT,
-  phone varchar(255) NOT NULL,
-  storename varchar(255) NOT NULL,
-  address varchar(255) NOT NULL,
+  phone varchar(255) DEFAULT '' NOT NULL,
+  storename varchar(255) DEFAULT '' NOT NULL,
+  address varchar(255) DEFAULT '' NOT NULL,
   createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
@@ -21,10 +21,10 @@ CREATE TABLE stores (
 
 CREATE TABLE items (
   id INT AUTO_INCREMENT,
-  itemname varchar(255) NOT NULL,
-  itemphoto varchar(255) NOT NULL,
-  itemdesc varchar(255) NOT NULL,
-  itemprice varchar(255) NOT NULL,
+  itemname varchar(255) DEFAULT '' NOT NULL,
+  itemphoto varchar(255) DEFAULT '' NOT NULL,
+  itemdesc varchar(255) DEFAULT '' NOT NULL,
+  itemprice varchar(255) DEFAULT '' NOT NULL,
   createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   store_id INT,
@@ -33,7 +33,7 @@ CREATE TABLE items (
 
 CREATE TABLE tags (
     id INT AUTO_INCREMENT,
-    tagname varchar(255) NOT NULL,
+    tagname varchar(255) DEFAULT '' NOT NULL,
     createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)

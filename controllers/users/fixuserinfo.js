@@ -15,10 +15,10 @@ module.exports = async (req, res) => {
     }
     else {
         await user.update({ nickname }, { where: { email: email } })
-        const userStoreId = user.findOne({ where: email })
+        const userStoreId = await user.findOne({ where: { email }})
         const storeId = userStoreId.dataValues.store_id
-        await store.update({ phone, address, storename }, { where: {id: storeId} })
-        res.status(205).send({ "message": "ok" })
+        await store.update({ phone, address, storename }, { where: { id: storeId } })
+        return res.status(205).send({ "message": "ok" })
     }
     
     console.log("서버 담당 누구 ?")
