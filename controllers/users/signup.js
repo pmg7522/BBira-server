@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     if (!email || !password || !nickname) {
         res.status(422).send({ message: "Unprocessable Entity" })
     }
-
+    
     await user.findOne({
         where: { email }
     })
@@ -18,11 +18,14 @@ module.exports = async (req, res) => {
             res.status(409).send({ message: "email exists" })
         } 
         else {
-            const userInfo = await user.create({ email, password, nickname })
             const storeInfo = await store.create({ storename, address, phone })
-            delete userInfo.dataValues.password
-            const newUser = { ...userInfo.dataValues, ...storeInfo.dataValues }
-            res.status(201).send({ message: "ok", data: { newUser }})
+            const storeId = storeInfo.dataValues.id
+            await user.create({ email, password, nickname, store_id: storeId })
+            res.status(201).send({ "message": "ok", })
         }
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).send({ message: "Internal Server Error" })
     })
 }

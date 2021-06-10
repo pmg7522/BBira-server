@@ -14,14 +14,15 @@ app.use(cors({
     credentials: true
 }))
 
-const port = 3000;
+const port = 3000; //배포환경시 80
 
 app.post("/fixuserinfo", controllers.fixuserinfo);
 app.post("/signup", controllers.signup);
 app.post("/login", controllers.login);
 app.get("/logout", controllers.logout);
-app.get("/userinfo", controllers.userinfo);
-app.get("/dropuser", controllers.dropuser);
+app.post("/dropuser", controllers.dropuser);
+app.post("/userinfo", controllers.userinfo);
+
 
 
 app.post("/fixiteminfo", controllers.fixiteminfo);
@@ -30,8 +31,8 @@ app.post("/allstoredata", controllers.allstoredata);
 app.get("/itemregister", controllers.itemregister);
 
 
-let server;
 
+let server;
 if(fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")){
 
   const privateKey = fs.readFileSync(__dirname + "/key.pem", "utf8");
