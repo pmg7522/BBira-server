@@ -41,11 +41,8 @@ CREATE TABLE tags (
 
 
 CREATE TABLE tag_stores (
-    id INT AUTO_INCREMENT,
     tag_id INT,
-    store_id INT,
-    createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    store_id INT
 );
 
 
@@ -58,7 +55,7 @@ ALTER TABLE tag_stores ADD FOREIGN KEY (tag_id) REFERENCES tags (id);
 ALTER TABLE stores CHANGE COLUMN createdAt createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE stores CHANGE COLUMN updatedAt updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
-INSERT INTO users (email, nickname, password) VALUES ("BBira@gmail.com", "BBira", "1234");
+INSERT INTO users (email, nickname, password, store_id) VALUES ("BBira@gmail.com", "BBira", "1234", 1);
 INSERT INTO stores (phone, storename, address) VALUES ("010-1234-5678", "shop", "강북");
 -- INSERT INTO tags (tagname) VALUES ()
 -- INSERT INTO items (itemname, itemphoto, itemdesc, itemprice) VALUES ()

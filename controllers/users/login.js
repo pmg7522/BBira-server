@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
       if (!userInfo) {
         res.status(404).send({ message: "invalid user" });
       } else {
-      //req.session.userId = userInfo.id;
+        req.session.userId = userInfo.email;
         res.status(200).send({ message: "ok" });
       }
 }

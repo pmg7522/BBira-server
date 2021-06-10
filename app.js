@@ -3,7 +3,8 @@ const cors = require("cors");
 const https = require('https');
 const fs = require('fs');
 const controllers = require("./controllers");
-
+require('dotenv').config()
+const session = require('express-session');
 
 const app = express();
 
@@ -13,6 +14,22 @@ app.use(cors({
     methods: ["GET", "POST", "OPTIONS"],
     credentials: true
 }))
+
+app.use(
+  session({
+    secret: 'BBira',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      domain: "localhost", // 클라이언트의 요청 도메인
+      path: '/',
+      maxAge: 24 * 6 * 60 * 10000,
+      sameSite: 'none',
+      httpOnly: true,
+      secure: true,
+    },
+  })
+);
 
 const port = 3000;
 
