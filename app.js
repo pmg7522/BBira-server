@@ -16,11 +16,19 @@ app.use(cors({
 
 const port = 3000;
 
-
+app.post("/fixuserinfo", controllers.fixuserinfo);
 app.post("/signup", controllers.signup);
 app.post("/login", controllers.login);
-app.get("/userinfo", controllers.userinfo);
 app.get("/logout", controllers.logout);
+app.get("/userinfo", controllers.userinfo);
+app.get("/dropuser", controllers.dropuser);
+
+
+app.post("/fixiteminfo", controllers.fixiteminfo);
+app.post("/dropitem", controllers.dropitem);
+app.post("/allstoredata", controllers.allstoredata);
+app.get("/itemregister", controllers.itemregister);
+
 
 
 let server;
