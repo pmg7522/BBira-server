@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
 dotenv.config();
 
+
 module.exports = async (req, res) => {
     
     const userInfo = await user.findOne({
@@ -10,10 +11,27 @@ module.exports = async (req, res) => {
       })
 
       if (!userInfo) {
-        res.status(404).send({ message: "invalid user" });
+        return res.status(404).send({ message: "invalid user" });
       } else {
-        req.session.userId = userInfo.id;
-        console.log(req.session.userId)
-        res.status(200).send({ message: "login successed" });
-      }
+        
+        delete userInfo.dataValues.password
+        const accessToken = jwt.sign(userInfo.dataValues, process.env.ACCESS_SECRET, {
+          expiresIn: '0.5h'
+        });
+        const refreshToken = jwt.sign(userInfo.dataValues, process.env.REFRESH_SECRET, {
+          expiresIn: '1h'
+        });
+
+      return res
+        .status(200)
+        .cookie("refreshToken", refreshToken, {
+          sameSite: 'none',
+          secure: true,
+          httpOnly: true
+        })
+        .send({ 
+          message: "login successed",
+          data: { accessToken: accessToken }
+        })
+  }
 }

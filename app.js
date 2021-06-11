@@ -4,7 +4,7 @@ const https = require('https');
 const fs = require('fs');
 const controllers = require("./controllers");
 require('dotenv').config()
-const session = require('express-session');
+// const session = require('express-session');
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -15,37 +15,25 @@ app.use(cors({
     methods: ["GET", "POST", "OPTIONS"],
     credentials: true
 }))
+
 app.use(cookieParser());
 
 const port = 3000; //배포환경: 80
 
-app.use(
-  session({
-    secret: '@BBira',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      // sameSite: 'None',
-      httpOnly: true,
-      // secure: true,
-    },
-  })
-);
-app.use(cookieParser());
 // users //
-app.post("/fixuserinfo", controllers.fixuserinfo); // email, nickname, address, storename, phone
+app.get("/fixuserinfo", controllers.fixuserinfo); // email, nickname, address, storename, phone
 app.post("/signup", controllers.signup); // email, nickname, address, storename, phone, password
 app.post("/login", controllers.login); // email, password
 app.get("/logout", controllers.logout);
-app.post("/dropuser", controllers.dropuser); // email
+app.get("/dropuser", controllers.dropuser); // email
 app.get("/userinfo", controllers.userinfo);
 
 // stores //
-app.post("/fixiteminfo", controllers.fixiteminfo);
-app.post("/dropitem", controllers.dropitem);
-app.post("/allstore", controllers.allstore);
-app.post("/itemregister", controllers.itemregister);
-app.post("/mystore", controllers.mystore);
+app.get("/fixiteminfo", controllers.fixiteminfo);
+app.get("/dropitem", controllers.dropitem);
+app.get("/allstore", controllers.allstore);
+app.get("/itemregister", controllers.itemregister);
+app.get("/mystore", controllers.mystore);
 
 
 let server;

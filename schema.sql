@@ -60,4 +60,3 @@ INSERT INTO stores (phone, storename, address) VALUES ("010-1234-5678", "shop", 
 -- INSERT INTO tags (tagname) VALUES ()
 -- INSERT INTO items (itemname, itemphoto, itemdesc, itemprice) VALUES ()
 
-
