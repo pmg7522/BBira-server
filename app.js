@@ -21,7 +21,7 @@ app.use(cookieParser());
 const port = 3000; //배포환경: 80
 
 // users //
-app.get("/fixuserinfo", controllers.fixuserinfo); // email, nickname, address, storename, phone
+app.post("/fixuserinfo", controllers.fixuserinfo); // email, nickname, address, storename, phone
 app.post("/signup", controllers.signup); // email, nickname, address, storename, phone, password
 app.post("/login", controllers.login); // email, password
 app.get("/logout", controllers.logout);
@@ -37,16 +37,17 @@ app.get("/mystore", controllers.mystore);
 
 
 let server;
-if(fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")){
+// if(fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")){
 
-  const privateKey = fs.readFileSync(__dirname + "/key.pem", "utf8");
-  const certificate = fs.readFileSync(__dirname + "/cert.pem", "utf8");
-  const credentials = { key: privateKey, cert: certificate };
+//   const privateKey = fs.readFileSync(__dirname + "/key.pem", "utf8");
+//   const certificate = fs.readFileSync(__dirname + "/cert.pem", "utf8");
+//   const credentials = { key: privateKey, cert: certificate };
 
-  server = https.createServer(credentials, app);
-  server.listen(port, () => console.log(`https 서버가 ${port}번에서 작동중입니다.`));
-} else {
+//   server = https.createServer(credentials, app);
+//   server.listen(port, () => console.log(`https 서버가 ${port}번에서 작동중입니다.`));
+// } else {
   server = app.listen(port,() => {
     console.log(`http 서버가 ${port}번에서 작동중입니다.`);
   })
-}
+// }
+

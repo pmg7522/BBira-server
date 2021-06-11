@@ -5,7 +5,7 @@ dotenv.config();
 
 module.exports = (req, res) => {
     // "/allstoredata" 최초 모든 데이터베이스 데이터 전달
-    // 모든 정보를 순서대로 배열에 담아서 합쳐서 
+    // 모든 정보를 순서대로 배열에 담아서 합쳐서 git 
 // [
 //   {
 //     "message": 'ok', 

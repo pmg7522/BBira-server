@@ -37,7 +37,7 @@ module.exports = async (req, res) => {
         const userInfo = await user.findOne({ where: { id: data.id }})
 
         if (!userInfo) {
-            return res.status(400).send({ data: null, message: "토큰이 없는 유저입니다." })
+            return res.status(404).send({ data: null, message: "토큰이 없는 유저입니다." })
         }
         else {
             delete userInfo.dataValues.password
