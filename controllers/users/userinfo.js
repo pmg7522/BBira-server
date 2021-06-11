@@ -8,9 +8,9 @@ module.exports = async (req, res) => {
     // 출력값 nickname email storename phone address
     // 유저 인포를 찾기 위해 이메일 & 상호명 클라이언트 쪽에서 받아야 한다. 
     // 받아온 이메일과 데이터베이스의 유저 테이블 & 스토어 테이블에서 이메일이 같은 유저를 찾아온다. 
-    console.log(req.session)
+    console.log(req.session.userId)
     if (!req.session.userId) { // 세션 구현하면서 확인할것
-        res.status(401).send({ "message": "Not found SessionId" })
+        return res.status(401).send({ "message": "Not found SessionId" })
     }
     else {
         const userInfo = await user.findOne({ where: { id: req.session.userId }})
