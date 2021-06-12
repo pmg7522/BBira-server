@@ -31,5 +31,3 @@ db.Sequelize = Sequelize;
 
 module.exports = db;
 
-// db.user = require("./user")(sequelize, Sequelize)
-// db.user = require("./store")(sequelize, Sequelize)
