@@ -18,9 +18,8 @@ module.exports = async (req, res) => {
             res.status(409).send({ message: "email exists" })
         } 
         else {
-            const storeInfo = await store.create({ storename, address, phone })
-            const storeId = storeInfo.dataValues.id
-            await user.create({ email, password, nickname, store_id: storeId })
+            await store.create({ storename, address, phone })
+            await user.create({ email, password, nickname })
             res.status(201).send({ "message": "signup successed" })
         }
     })

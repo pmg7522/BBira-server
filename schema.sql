@@ -5,7 +5,8 @@ CREATE TABLE users (
   password varchar(255) DEFAULT '' NOT NULL,
   createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  store_id INT,
+  store_id INT NOT NULL,
+  FOREIGN KEY (store_id) REFERENCES stores (id),
   PRIMARY KEY (id)
 );
 
