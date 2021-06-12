@@ -18,17 +18,17 @@ module.exports = async (req, res) => {
             res.status(409).send({ message: "email exists" })
         }
         else {
-            const storeInfo = await store.create({ storename, address, phone })
+            await store.create({ storename, address, phone })
 
-            const storeId = storeInfo.dataValues.id // 스토어 아이디 추출
+            // const storeId = storeInfo.dataValues.id // 스토어 아이디 추출
 
-            tagname.forEach( async (el) => {  
-                await tag.create({ tagname: el })
-                const tag1 = await tag.findOne({ where: { tagname: el } })
-                await tag_store.create({ store_id: storeId, tag_id: tag1.dataValues.id })
-            })
+            // tagname.forEach( async (el) => {  
+            //     await tag.create({ tagname: el })
+            //     const tag1 = await tag.findOne({ where: { tagname: el } })
+            //     await tag_store.create({ store_id: storeId, tag_id: tag1.dataValues.id })
+            // })
 
-            await user.create({ email, password, nickname, store_id: storeId })
+            await user.create({ email, password, nickname })
             res.status(201).send({ "message": "signup successed" })
         }
     })

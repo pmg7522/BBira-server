@@ -26,6 +26,12 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    // store.associate = function(models) {
+    //   models.item.hasMany(models.item, {
+    //       foreignKey: 'store_id',
+    //       onDelete: 'cascade'
+    //   });
+    // };
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('stores');

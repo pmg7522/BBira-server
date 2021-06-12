@@ -12,16 +12,16 @@ module.exports = async (req, res) => {
     console.log(authorization)
     const token = authorization.split(' ')[1];
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
-    const userInfo = await user.findOne({ where: { id: data.id }})
+    // const userInfo = await user.findOne({ where: { id: data.id }})
 
-    if (userInfo) {
-        const storeId = userInfo.dataValues.store_id
-        await store.destroy({ where: { id: storeId }})
+    // if (userInfo) {
+        // const storeId = userInfo.dataValues.store_id
+        // await store.destroy({ where: { id: storeId }})
         await user.destroy({ where: { id: data.id }})
-        res.status(205).send({ "message": '재가입은 유료입니다.' })
-    }
-    else {
-        res.status(500).send({ "message": "Internal Server Error" })
-    }
+        return res.status(205).send({ "message": '재가입은 유료입니다.' })
+    // }
+    // else {
+        return res.status(500).send({ "message": "Internal Server Error" })
+    // }
 
 }

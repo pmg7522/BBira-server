@@ -20,9 +20,6 @@ module.exports = {
       itemprice: {
         type: Sequelize.STRING
       },
-      store_id: {
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -31,7 +28,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })    
+    .then(function( ) { 
+      queryInterface.addColumn('items','store_id',{
+          type: Sequelize.INTEGER,
+          references:{model: 'stores', key: 'id'},
+      });
+    });;
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('items');

@@ -11,6 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.store.hasOne(models.user, { 
+        foreignKey: store_id, 
+        onDelete: 'CASCADE' 
+      })
+
+      // models.store.hasMany(models.item, { 
+      //   foreignKey: store_id, 
+      //   sourceKey: id, 
+      //   onDelete: 'CASCADE' 
+      // })
+      // models.item.belongsTo(models.store, { 
+      //   foreignKey: store_id, 
+      //   targetKey: id 
+      // })
     }
   };
   store.init({

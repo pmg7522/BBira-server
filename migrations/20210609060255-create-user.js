@@ -17,9 +17,6 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
-      store_id: {
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -28,6 +25,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    })    
+    .then(function( ) { 
+      queryInterface.addColumn('users','store_id',{
+          type: Sequelize.INTEGER,
+          references:{model: 'stores', key: 'id'},
+          onDelete: 'CASCADE'
+      });
     });
   },
   down: async (queryInterface, Sequelize) => {

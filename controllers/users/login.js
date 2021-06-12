@@ -26,7 +26,6 @@ module.exports = async (req, res) => {
         .status(200)
         .cookie("refreshToken", refreshToken, {
           sameSite: 'none',
-          secure: true,
           httpOnly: true
         })
         .send({ 
