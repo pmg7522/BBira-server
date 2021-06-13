@@ -5,14 +5,17 @@ dotenv.config();
 
 
 module.exports = async (req, res) => {
-    const { email } = req.body
+    const { email, password } = req.body
     const userInfo = await user.findOne({
         where: { email }
-      })
+    })
 
     if (!userInfo) {
         return res.status(404).send({ message: "invalid user" });
     } 
+    if (!email || !password) {
+      return res.status(422).send({ message: "fill in blank" })
+    }
     else {
       delete userInfo.dataValues.password
       const accessToken = jwt.sign(userInfo.dataValues, process.env.ACCESS_SECRET, {

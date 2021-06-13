@@ -6,10 +6,13 @@ dotenv.config();
 module.exports = async (req, res) => {
     const { email, password, nickname, storename, address, phone, tagname } = req.body
     console.log(email, password, nickname, storename, address, phone, tagname)
-    if (!storename) { // 사용자 회원가입
+    if (!storename || !address || !phone || !tagname) { // 사용자 회원가입
         if (!email || !password || !nickname) {
             return res.status(422).send({ message: "fill in blank" })
         }
+        // if (!storename && !address && !phone && !tagname) {
+        //     return res.status(422).send({ message: "회원 가입에 필요한 정보를 모두 입력 부탁드립니다." })
+        // }
         await user.findOne({
             where: { email }
         })

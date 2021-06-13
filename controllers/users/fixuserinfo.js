@@ -4,9 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
-    // 토큰 받고
-    // 유저정보 가져와서 아래 정보를 업데이트하고
-    // nickname, storename, address, phone, password
+
     const { nickname, phone, address, storename, password } = req.body
     
     if (!nickname || !phone || !address || !storename || !password) {

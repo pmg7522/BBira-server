@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
         const data = jwt.verify(token, process.env.ACCESS_SECRET);
 
         if (!data) {
-            return res.status(404).send({ data: null, message: "토큰이 없는 유저입니다." })
+            return res.status(404).send({ data: null, message: "데이터에 없는 유저입니다." })
         }
         else {
             delete data.password
