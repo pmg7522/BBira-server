@@ -9,13 +9,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       phone: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       storename: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -25,13 +28,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
-    // store.associate = function(models) {
-    //   models.item.hasMany(models.item, {
-    //       foreignKey: 'store_id',
-    //       onDelete: 'cascade'
-    //   });
-    // };
+    })
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('stores');

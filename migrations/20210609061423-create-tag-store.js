@@ -1,28 +1,18 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('items', {
+    await queryInterface.createTable('tag_stores', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      itemname: {
-        type: Sequelize.STRING
-      },
-      itemphoto: {
-        type: Sequelize.STRING
-      },
-      itemdesc: {
-        type: Sequelize.STRING
-      },
-      itemprice: {
-        type: Sequelize.STRING
+      tagId: {
+        type: Sequelize.INTEGER
       },
       storeId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -32,12 +22,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    })
+    });
 
-    await queryInterface.addConstraint("items", {
+    await queryInterface.addConstraint("tag_stores", {
       fields: ["storeId"],
       type: "foreign key",
-      name: "fk_items_stores",
+      name: "fk_tag_stores_stores",
       references: {
         table: "stores",
         field: "id",
@@ -45,9 +35,21 @@ module.exports = {
       onDelete: "cascade",
       onUpdate: "cascade",
     });
-    
+
+    await queryInterface.addConstraint("tag_stores", {
+      fields: ["tagId"],
+      type: "foreign key",
+      name: "fk_tag_stores_tags",
+      references: {
+        table: "tags",
+        field: "id",
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
+
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('items');
+    await queryInterface.dropTable('tag_stores');
   }
 };

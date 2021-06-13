@@ -17,6 +17,10 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
+      storeId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -25,15 +29,21 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    })    
-    .then(function( ) { 
-      queryInterface.addColumn('users','store_id',{
-          type: Sequelize.INTEGER,
-          references:{model: 'stores', key: 'id'},
-          onDelete: 'CASCADE'
-      });
+    });
+
+    await queryInterface.addConstraint("users", {
+      fields: ["storeId"],
+      type: "foreign key",
+      name: "fk_users_stores",
+      references: {
+        table: "stores",
+        field: "id",
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade",
     });
   },
+  
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('users');
   }

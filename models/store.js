@@ -10,21 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      models.store.hasOne(models.user, { 
-        foreignKey: store_id, 
-        onDelete: 'CASCADE' 
-      })
-
-      // models.store.hasMany(models.item, { 
-      //   foreignKey: store_id, 
-      //   sourceKey: id, 
-      //   onDelete: 'CASCADE' 
-      // })
-      // models.item.belongsTo(models.store, { 
-      //   foreignKey: store_id, 
-      //   targetKey: id 
-      // })
+      models.store.hasOne(models.user, { foreignKey: "storeId" })
+      models.store.hasMany(models.item, { foreignKey: "storeId" })
+      models.store.hasMany(models.tag_store, { foreignKey: "storeId" })
     }
   };
   store.init({
