@@ -18,23 +18,18 @@ module.exports = async (req, res) => {
     if (!authorization) { 
         return res.status(401).send({ "message": 'invalid access token'})
     }
-    console.log(authorization)
+
     const token = authorization.split(' ')[1];
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
-    const userInfo = await user.findOne({ where: { id: data.id }})
     
-
-    if (userInfo) {
+    if (data) {
       await user.update({ nickname, password }, { where: { id: data.id } })
-      const storeId = userInfo.dataValues.store_id
-      await store.update({ phone, address, storename }, { where: { id: storeId } })
+      await store.update({ phone, address, storename }, { where: { id: data.storeId } })
 
       const newUserInfo = await user.findOne({ where: { id: data.id }})
-      const newStoreInfo = await store.findOne({ where: { id: storeId }})
-      
+      const newStoreInfo = await store.findOne({ where: { id: data.storeId }})
       delete newUserInfo.dataValues.password
     
-      
       return res.status(205).send({ 
           message: "userinfo Fixed", 
           data: { ...newUserInfo.dataValues, ...newStoreInfo.dataValues }

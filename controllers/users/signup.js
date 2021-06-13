@@ -5,36 +5,57 @@ dotenv.config();
 
 module.exports = async (req, res) => {
     const { email, password, nickname, storename, address, phone, tagname } = req.body
-
-    if (!email || !password || !nickname) {
-        res.status(422).send({ message: "fill in blank" })
+    console.log(email, password, nickname, storename, address, phone, tagname)
+    if (!storename) { // 사용자 회원가입
+        if (!email || !password || !nickname) {
+            return res.status(422).send({ message: "fill in blank" })
+        }
+        await user.findOne({
+            where: { email }
+        })
+        .then(async (data) => {
+            if (data) {
+                return res.status(409).send({ message: "email exists" })
+            }
+            const storeInfo =  await store.create({ storename, address, phone })
+            const storeId = storeInfo.dataValues.id
+            await user.create({ email, password, nickname, storeId })
+            return res.status(201).send({ "message": "signup successed" })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send({ message: "Internal Server Error" })
+        })
     }
-
-    await user.findOne({
-        where: { email }
-    })
-    .then(async (data) => {
-        if (data) {
-            res.status(409).send({ message: "email exists" })
+    else { // 사업자 회원가입
+        if (!email || !password || !nickname || !storename || !address || !phone || !tagname) {
+            return res.status(422).send({ message: "fill in blank" })
         }
-        else {
-            await store.create({ storename, address, phone })
-
-            // const storeId = storeInfo.dataValues.id // 스토어 아이디 추출
-
-            // tagname.forEach( async (el) => {  
-            //     await tag.create({ tagname: el })
-            //     const tag1 = await tag.findOne({ where: { tagname: el } })
-            //     await tag_store.create({ store_id: storeId, tag_id: tag1.dataValues.id })
-            // })
-
-            await user.create({ email, password, nickname })
-            res.status(201).send({ "message": "signup successed" })
-        }
-    })
-    .catch(err => {
-        console.log(err)
-        res.status(500).send({ message: "Internal Server Error" })
-    })
+        await user.findOne({
+            where: { email }
+        })
+        .then(async (data) => {
+            if (data) {
+                res.status(409).send({ message: "email exists" })
+            }
+            else {
+                const storeInfo = await store.create({ storename, address, phone })
+                const storeId = storeInfo.dataValues.id // 스토어 아이디 추출
+    
+                for (let el of tagname) {
+                    await tag.create({ tagname: el })
+                    const taginfo = await tag.findOne({ where: { tagname: el } })
+                    await tag_store.create({ storeId, tagId: taginfo.dataValues.id })
+                }
+    
+                await user.create({ email, password, nickname, storeId })
+                res.status(201).send({ "message": "signup successed" })
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).send({ message: "Internal Server Error" })
+        })
+    }
 }
 

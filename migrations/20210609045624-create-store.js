@@ -11,14 +11,17 @@ module.exports = {
       phone: {
         type: Sequelize.STRING,
         allowNull: false,
+        defaultValue: ''
       },
       storename: {
         type: Sequelize.STRING,
         allowNull: false,
+        defaultValue: ''
       },
       address: {
         type: Sequelize.STRING,
         allowNull: false,
+        defaultValue: ''
       },
       createdAt: {
         allowNull: false,
