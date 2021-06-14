@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
+    console.log(req.body)
     const authorization = req.headers['authorization'];
 
     if (!authorization) { 
@@ -14,6 +15,11 @@ module.exports = async (req, res) => {
 
     await store.destroy({ where: { id: data.storeId }})
     await user.destroy({ where: { id: data.id }})
+
+    
+
+    await tag_store.destroy({ where: { storeId } })
+    await tag.destroy({ where: {  } })
     return res.status(205).send({ "message": '회원탈퇴 완료' })
 
     return res.status(500).send({ "message": "Internal Server Error" })
