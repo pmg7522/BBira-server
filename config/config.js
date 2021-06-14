@@ -20,7 +20,7 @@ module.exports = {
     "password": process.env.DATABASE_PASSWORD,
     "database": "BBira",
     "host": process.env.DATABASE_HOST,
-    "port": 13306,
+    "port": process.env.DATABASE_PORT,
     "dialect": "mysql"
   }
 }

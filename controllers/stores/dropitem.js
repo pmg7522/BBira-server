@@ -1,12 +1,9 @@
-const { store, item } = require('../../models');
+const { user, store, item, tag, tag_store } = require('../../models');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
-    // 클라이언트에서 이메일 & 상호명을 받는다. 
-    // 테이블에서 찾아 없앤다. 
-    // ok res를 보낸다. 
     const authorization = req.headers['authorization'];
 
     if (!authorization) { 
@@ -14,16 +11,12 @@ module.exports = async (req, res) => {
     }
     const token = authorization.split(' ')[1];
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
-    console.log(data);
-    const itemInfo = await item.findOne({ where: { store_id: data.id }})
-
-    if (itemInfo) {
-        const storeId = itemInfo.dataValues.store_id
-        await item.destroy({ where: { store_id: data.id }})
-        res.status(205).send({ "message": '재가입은 유료입니다.' })
+    if (!data) {
+        return res.status(404).send({ message: "데이터에 없는 유저입니다." })
     }
-    else {
-        res.status(500).send({ "message": "Internal Server Error" })
-    }
+    const { itemname } = req.body
+    await item.destroy({ where: { itemname } })
+    return res.status(205).send({ "message": "아이템 삭제 완료" })
 
+    res.status(500).send({ "message": "Internal Server Error" })
 }

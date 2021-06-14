@@ -6,8 +6,23 @@ const controllers = require("./controllers");
 require('dotenv').config()
 // const session = require('express-session');
 const cookieParser = require("cookie-parser");
+const models = require('./models');
+
 
 const app = express();
+
+// models.sequelize.sync()
+//   .then(() => {
+//     console.log('✓ DB connection success.');
+//     console.log('  Press CTRL-C to stop\n');
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     console.log('✗ DB connection error. Please make sure DB is running.');
+//     process.exit();
+//   });
+
+
 
 app.use(express.json())
 app.use(cors({
@@ -31,7 +46,7 @@ app.get("/userinfo", controllers.userinfo);
 // stores //
 app.post("/fixiteminfo", controllers.fixiteminfo);
 app.post("/itemregister", controllers.itemregister);
-app.get("/dropitem", controllers.dropitem);
+app.post("/dropitem", controllers.dropitem);
 app.get("/allstore", controllers.allstore);
 app.get("/mystore", controllers.mystore);
 

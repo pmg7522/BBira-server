@@ -1,12 +1,13 @@
 CREATE TABLE users (
-  id INT AUTO_INCREMENT,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   nickname varchar(255) DEFAULT '' NOT NULL,
   email varchar(255) DEFAULT '' NOT NULL,
   password varchar(255) DEFAULT '' NOT NULL,
   createdAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updatedAt datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   store_id INT,
-  PRIMARY KEY (id)
+  FOREIGN KEY (store_id)
+  REFERENCES stores (id)
 );
 
 CREATE TABLE stores (
