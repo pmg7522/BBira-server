@@ -1,10 +1,12 @@
 const { user, store, item, tag, tag_store } = require('../../models');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
+const userinfo = require('./userinfo');
 dotenv.config();
 
 
 module.exports = async (req, res) => {
+    console.log(req.body)
     const { email, password } = req.body
     const userInfo = await user.findOne({
         where: { email }
@@ -16,8 +18,9 @@ module.exports = async (req, res) => {
     if (!email || !password) {
       return res.status(422).send({ message: "fill in blank" })
     }
-    if (password !== userInfo.dataValues.password) return res.status(404).send({ message: '정확한 정보를 입력해 주십시오.' });
-    
+    if (password !== userInfo.dataValues.password) {
+      return res.status(404).send({ message: '정확한 정보를 입력해 주십시오.' })
+    }
     else {
       delete userInfo.dataValues.password
       const accessToken = jwt.sign(userInfo.dataValues, process.env.ACCESS_SECRET, {

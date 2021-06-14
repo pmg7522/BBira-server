@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
+    console.log(req.body)
     const authorization = req.headers['authorization'];
     
     if (!authorization) { 

@@ -6,15 +6,14 @@ dotenv.config();
 module.exports = async (req, res) => {
     const { email, password, nickname, storename, address, phone, tagname } = req.body
     console.log(email, password, nickname, storename, address, phone, tagname)
+
     if (!storename || !address || !phone || !tagname) { // 사용자 회원가입
         if (!email || !password || !nickname) {
             return res.status(422).send({ message: "fill in blank" })
         }
-        
         if (tagname) {
             return res.status(422).send({ message: "태그는 사업자만 등록 가능합니다." })
         }
-
         await user.findOne({
             where: { email }
         })
@@ -34,7 +33,7 @@ module.exports = async (req, res) => {
     }
     else { // 사업자 회원가입
         if (!email || !password || !nickname || !storename || !address || !phone || !tagname) {
-            return res.status(422).send({ message: "fill in blank" })
+            return res.status(422).send({ message: "사업자 회원가입에 필요한 정보를 모두 입력 해야 합니다." })
         }
         await user.findOne({
             where: { email }
@@ -44,10 +43,16 @@ module.exports = async (req, res) => {
                 res.status(409).send({ message: "email exists" })
             }
             else {
+                const duplicatedStoreName = await store.findOne({ storename })
+                if (duplicatedStoreName.dataValues.storename === storename) {
+                    return res.status(409).send({ message: "중복된 storename 입니다." })
+                }
+
+                tagnameArr = tagname.split(',')
+                console.log(tagnameArr)
                 const storeInfo = await store.create({ storename, address, phone })
                 const storeId = storeInfo.dataValues.id // 스토어 아이디 추출
-                const tagnameArr = tagname.split(',')
-
+    
                 for (let el of tagnameArr) {
                     await tag.create({ tagname: el })
                     const tagInfo = await tag.findOne({ where: { tagname: el } })

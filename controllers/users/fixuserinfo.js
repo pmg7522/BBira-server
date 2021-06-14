@@ -4,10 +4,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
-
+    console.log(req.body)
     const { nickname, phone, address, storename, password, tagname } = req.body
-    
-    if (!nickname || !phone || !address || !storename || !password ||!tagname) {
+    // tagname = "tag1,tag2"로 들어온다. split(',')
+    if (!nickname || !phone || !address || !storename || !password) {
         return res.status(422).send({ "message": "Fill in blank" })
     }
 
@@ -36,12 +36,11 @@ module.exports = async (req, res) => {
         await tag.create({ tagname: el })
       }
       // 태그도 변경 가능하게 수정
+    //   await tag_store.create({ storeId, tagId: taginfo.dataValues.id })
 
       const newUserInfo = await user.findOne({ where: { id: data.id }})
       const newStoreInfo = await store.findOne({ where: { id: data.storeId }})
       const newTagsId = await tag_store.findAll({ where: { storeId: data.storeId }})
-      console.log(data)
-      console.log(newTagsId)
       const newTagsname = await tag.findAll({ where: { id: newTagsId }})
       const newTagsA = newTagsname.map(el => el.dataValues)
       const newTags = [];
@@ -51,9 +50,12 @@ module.exports = async (req, res) => {
       }
       delete newUserInfo.dataValues.password
     
+      const newTagsB = await tag_store.findAll({ where: { storeId: data.storeId }})
+      const newTagsInfo = newTagsB.map(el => el.dataValues)
+
       return res.status(205).send({ 
           message: "userinfo Fixed", 
-          data: { ...newUserInfo.dataValues, ...newStoreInfo.dataValues, tagname: newTags }
+          data: { ...newUserInfo.dataValues, ...newStoreInfo.dataValues, tagname: newTagsInfo }
       })
     }
     else {

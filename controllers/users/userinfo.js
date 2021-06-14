@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
-    // 출력값 nickname email storename phone address
+
     const authorization = req.headers['authorization'];
     if (!authorization) { 
         return res.status(401).send({ "message": 'invalid access token'})
@@ -18,25 +18,25 @@ module.exports = async (req, res) => {
         }
         else {
             delete data.password
-
+            // 유저정보, 스토어정보, 태그정보
+            // result = { storeinfo, userinfo, taginfo }
             const storeId = data.storeId
             const storeInfo = await store.findOne({ where: { id: storeId }})
+            console.log(storeInfo)
+            // console.log(nickname, email, storename, phone, address)
+            const storeInfoData = storeInfo.dataValues
+            const alltagIdinfo = await tag_store.findAll({ where: { storeId: data.storeId } })
+            const tagsId = alltagIdinfo.map(el => el.dataValues.tagId)
     
-            const { nickname, email } = data
-            const { storename, phone, address } = storeInfo.dataValues
-
-            const alltagIdInfo = await tag_store.findAll({ where: { storeId: data.storeId } })
-            const tagsId = alltagIdInfo.map(el => el.dataValues.tagId)
-    
-            const tagname = [];
+            const tags = [];
             for (let el of tagsId) {
                 let taginfo = await tag.findOne({ where: { id: el } })
-                tagname.push(taginfo.dataValues.tagname)
+                tags.push(taginfo.dataValues)
             }
-
+            console.log(tags)
             return res.status(200).send({ 
                 "message": "유저 정보 여깃어 !", 
-                "data": { nickname, email, storename, phone, address, tagname }
+                "data": { user: data, store: storeInfoData, tags }
             });
         }
     }
