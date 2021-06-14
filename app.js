@@ -36,9 +36,9 @@ app.use(cookieParser());
 const port = 3000; //배포환경: 80
 
 // users //
-app.post("/fixuserinfo", controllers.fixuserinfo);
-app.post("/signup", controllers.signup);
-app.post("/login", controllers.login);
+app.post("/fixuserinfo", controllers.fixuserinfo); // tagname: arr, nickname: str, email: str, password: str, phone: str, address: str, storename: str
+app.post("/signup", controllers.signup); // tagname: arr, nickname: str, email: str, password: str, phone: str, address: str, storename: str
+app.post("/login", controllers.login); // email: str, password: str
 app.get("/logout", controllers.logout);
 app.get("/dropuser", controllers.dropuser);
 app.get("/userinfo", controllers.userinfo);

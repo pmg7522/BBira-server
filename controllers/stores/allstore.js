@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     const allstoreinfo = await store.findAll()
     const hasNameStore = allstoreinfo.filter(el => el.dataValues.storename !== '')
     const StoreDataToMakeResult = hasNameStore.map(el => el.dataValues)
-    const reuslt = [];
+    const result = [];
     for (let shop of StoreDataToMakeResult) {
 
         const { phone, storename, address } = shop
@@ -26,12 +26,11 @@ module.exports = async (req, res) => {
 
         const allitemsinfo = await item.findAll({ where: { storeId: shop.id } })
         const items = allitemsinfo.map(el => el.dataValues)
-        console.log(items)
 
-        reuslt.push({ storename, phone, address, tagname, items })
+        result.push({ storename, phone, address, tagname, items })
     }
-
-    return res.status(200).send({ message: "ok", data: reuslt })
+    console.log(result)
+    return res.status(200).send({ message: "ok", data: result })
 
     res.status(500).send({ "message": "Internal Server Error" })
 }
