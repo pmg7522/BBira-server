@@ -22,7 +22,6 @@ module.exports = async (req, res) => {
             // result = { storeinfo, userinfo, taginfo }
             const storeId = data.storeId
             const storeInfo = await store.findOne({ where: { id: storeId }})
-            console.log(storeInfo)
             // console.log(nickname, email, storename, phone, address)
             const storeInfoData = storeInfo.dataValues
             const alltagIdinfo = await tag_store.findAll({ where: { storeId: data.storeId } })
@@ -33,7 +32,6 @@ module.exports = async (req, res) => {
                 let taginfo = await tag.findOne({ where: { id: el } })
                 tags.push(taginfo.dataValues)
             }
-            console.log(tags)
             return res.status(200).send({ 
                 "message": "유저 정보 여깃어 !", 
                 "data": { user: data, store: storeInfoData, tags }

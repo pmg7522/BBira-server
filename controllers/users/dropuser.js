@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
-    console.log(req.body)
     const authorization = req.headers['authorization'];
 
     if (!authorization) { 
@@ -15,13 +14,18 @@ module.exports = async (req, res) => {
     const tagId = await tag_store.findAll({ where: { storId: data.id }})
     const tagsInfo = tagId.map(el => el.dataValues.tagId)
 
-    await store.destroy({ where: { id: data.storeId }})
+    const joinId = await tag_store.findAll({ where: { storeId: data.storeId }})
+    const joinInfo = joinId.map(el => el.dataValues.tagId)
+
+    for(let el of joinInfo){
+        await tag.destroy({ where: { id: el }})
+    }
+
     await user.destroy({ where: { id: data.id }})
+    await store.destroy({ where: { id: data.storeId }})
+    await item.destroy({ where: { storeId: data.storeId }})
+    await tag_store.destroy({ where: { storeId: data.storeId }})
 
-    
-
-    await tag_store.destroy({ where: { storeId } })
-    await tag.destroy({ where: {  } })
     return res.status(205).send({ "message": '회원탈퇴 완료' })
 
     return res.status(500).send({ "message": "Internal Server Error" })

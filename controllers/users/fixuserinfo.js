@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
-    console.log(req.body)
     const { nickname, phone, address, storename, password, tagname } = req.body
     // tagname = "tag1,tag2"로 들어온다. split(',')
     if (!nickname || !phone || !address || !storename || !password) {
@@ -49,13 +48,27 @@ module.exports = async (req, res) => {
         newTags.push(newTagInfo.dataValues)
       }
       delete newUserInfo.dataValues.password
-    
-      const newTagsB = await tag_store.findAll({ where: { storeId: data.storeId }})
-      const newTagsInfo = newTagsB.map(el => el.dataValues)
+
+      const tagnameArr = tagname.split(',')
+
+      for (let el of tagnameArr) {
+          await tag.create({ tagname: el })
+          const taginfo = await tag.findOne({ where: { tagname: el } })
+          await tag_store.create({ storeId: data.storeId, tagId: taginfo.dataValues.id })
+      }
+      const newTags = await tag_store.findAll({ where: { storeId: data.storeId }})
+      const newTagsInfo = newTags.map(el => el.dataValues.tagId)
+
+      const tagnames = [];
+
+      for (let el of newTagsInfo) {
+        const tagB = await tag.findOne({ where: { id: el }})
+        tagnames.push(tagB)
+      }
 
       return res.status(205).send({ 
           message: "userinfo Fixed", 
-          data: { ...newUserInfo.dataValues, ...newStoreInfo.dataValues, tagname: newTagsInfo }
+          data: { ...newUserInfo.dataValues, ...newStoreInfo.dataValues, tagnames }
       })
     }
     else {

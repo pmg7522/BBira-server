@@ -6,7 +6,6 @@ dotenv.config();
 
 
 module.exports = async (req, res) => {
-    console.log(req.body)
     const authorization = req.headers['authorization'];
     
     if (!authorization) { 
@@ -20,26 +19,26 @@ module.exports = async (req, res) => {
     }
     else {
       // 해당 로그인한 사람의 item, store, tag테이블에 접근하여 데이터를 보내준다. 
-        const allItemsinfo = await item.findAll({ where: { storeId: data.storeId } })
-        const items = allItemsinfo.map(el => el.dataValues)
+        const allItemsInfo = await item.findAll({ where: { storeId: data.storeId } })
+        const items = allItemsInfo.map(el => el.dataValues)
         
-        const storeinfo = await store.findOne({ where: { id: data.storeId } })
-        const { storename, phone } = storeinfo.dataValues
+        const storeInfo = await store.findOne({ where: { id: data.storeId } })
+        const stores = storeInfo.dataValues
 
         const alltagIdinfo = await tag_store.findAll({ where: { storeId: data.storeId } })
         const tagsId = alltagIdinfo.map(el => el.dataValues.tagId)
 
-        const tagname = [];
+        const tags = [];
         for (let el of tagsId) {
             let taginfo = await tag.findOne({ where: { id: el } })
-            tagname.push(taginfo.dataValues.tagname)
+            tags.push(taginfo.dataValues)
         }
 
         return res
         .status(200)
         .send({ 
             "message": '내 스토어 정보 여깃어 !', 
-            "data": { tagname, storename, phone, items }  
+            "data": { tags, stores, items }  
         })
     }
     res.status(500).send({ "message": "Internal Server Error" })
