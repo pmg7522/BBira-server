@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chanyang721/BBira-server.git"
+    "url": "git+https://github.com/pmg7522/BBira-server.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/chanyang721/BBira-server/issues"
+    "url": "https://github.com/pmg7522/BBira-server/issues"
   },
-  "homepage": "https://github.com/chanyang721/BBira-server#readme",
+  "homepage": "https://github.com/pmg7522/BBira-server#readme",
   "dependencies": {
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
