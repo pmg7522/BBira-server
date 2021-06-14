@@ -35,9 +35,11 @@ module.exports = async (req, res) => {
         if (!email || !password || !nickname || !storename || !address || !phone || !tagname) {
             return res.status(422).send({ message: "사업자 회원가입에 필요한 정보를 모두 입력 해야 합니다." })
         }
+
         await user.findOne({
             where: { email }
         })
+
         .then(async (data) => {
             if (data) {
                 res.status(409).send({ message: "email exists" })
@@ -55,17 +57,13 @@ module.exports = async (req, res) => {
     
                 for (let el of tagnameArr) {
                     await tag.create({ tagname: el })
-                    const tagInfo = await tag.findOne({ where: { tagname: el } })
-                    await tag_store.create({ storeId, tagId: tagInfo.dataValues.id })
+                    const taginfo = await tag.findOne({ where: { tagname: el } })
+                    await tag_store.create({ storeId, tagId: taginfo.dataValues.id })
                 }
     
                 await user.create({ email, password, nickname, storeId })
                 res.status(201).send({ "message": "signup successed" })
             }
-        })
-        .catch(err => {
-            console.log(err)
-            res.status(500).send({ message: "Internal Server Error" })
         })
     }
 }

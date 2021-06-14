@@ -14,7 +14,7 @@ module.exports = {
         defaultValue: ''
       },
       itemphoto: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(3000),
         allowNull: false,
         defaultValue: ''
       },
