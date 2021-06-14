@@ -16,6 +16,8 @@ module.exports = async (req, res) => {
     if (!email || !password) {
       return res.status(422).send({ message: "fill in blank" })
     }
+    if (!password) return res.status(404).send({ message: '정확한 정보를 입력해 주십시오.' });
+    
     else {
       delete userInfo.dataValues.password
       const accessToken = jwt.sign(userInfo.dataValues, process.env.ACCESS_SECRET, {
@@ -28,12 +30,11 @@ module.exports = async (req, res) => {
     return res
       .status(200)
       .cookie("refreshToken", refreshToken, {
-        sameSite: 'none',
         httpOnly: true
       })
       .send({ 
         message: "login successed",
-        data: { accessToken: accessToken }
+        data: { accessToken, refreshToken }
       })
   }
 }
