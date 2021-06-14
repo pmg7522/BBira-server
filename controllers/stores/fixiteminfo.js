@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
-    console.log(req.body)
     const authorization = req.headers['authorization'];
     
     if (!authorization) { 
@@ -18,8 +17,8 @@ module.exports = async (req, res) => {
     }
     else {
         // 원래 아이템 이름 필요 
-        const { originalname, itemname, itemphoto, itemdesc, itemprice } = req.body;
-        await item.update({ itemname, itemphoto, itemdesc, itemprice }, { where: { itemname: originalname } })
+        const { id, itemname, itemphoto, itemdesc, itemprice } = req.body;
+        await item.update({ itemname, itemphoto, itemdesc, itemprice }, { where: { id }})
         res.status(205).send({ "message": 'item information is fixed'})
     }
 }

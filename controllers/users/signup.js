@@ -5,7 +5,6 @@ dotenv.config();
 
 module.exports = async (req, res) => {
     const { email, password, nickname, storename, address, phone, tagname } = req.body
-    console.log(email, password, nickname, storename, address, phone, tagname)
 
     if (!storename || !address || !phone || !tagname) { // 사용자 회원가입
         if (!email || !password || !nickname) {
@@ -21,7 +20,7 @@ module.exports = async (req, res) => {
             if (data) {
                 return res.status(409).send({ message: "email exists" })
             }
-            const storeInfo =  await store.create({ storename, address, phone })
+            const storeInfo = await store.create({ storename, address, phone })
             const storeId = storeInfo.dataValues.id
             await user.create({ email, password, nickname, storeId })
             return res.status(201).send({ "message": "signup successed" })
@@ -43,13 +42,7 @@ module.exports = async (req, res) => {
                 res.status(409).send({ message: "email exists" })
             }
             else {
-                const duplicatedStoreName = await store.findOne({ storename })
-                if (duplicatedStoreName.dataValues.storename === storename) {
-                    return res.status(409).send({ message: "중복된 storename 입니다." })
-                }
-
-                tagnameArr = tagname.split(',')
-                console.log(tagnameArr)
+                const tagnameArr = tagname.split(',')
                 const storeInfo = await store.create({ storename, address, phone })
                 const storeId = storeInfo.dataValues.id // 스토어 아이디 추출
     

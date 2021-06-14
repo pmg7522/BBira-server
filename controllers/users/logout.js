@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = (req, res) => {
-    console.log(req.body)
     const authorization = req.headers['authorization'];
     if (!authorization) { 
         return res.status(401).send({ "message": 'invalid access token'})

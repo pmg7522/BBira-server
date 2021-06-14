@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = async (req, res) => {
-    console.log(req.body)
     const authorization = req.headers['authorization'];
 
     if (!authorization) { 
@@ -15,8 +14,8 @@ module.exports = async (req, res) => {
     if (!data) {
         return res.status(404).send({ message: "데이터에 없는 유저입니다." })
     }
-    const { itemname } = req.body
-    await item.destroy({ where: { itemname } })
+    const { id } = req.body
+    await item.destroy({ where: { id }})
     return res.status(205).send({ "message": "아이템 삭제 완료" })
 
     res.status(500).send({ "message": "Internal Server Error" })
