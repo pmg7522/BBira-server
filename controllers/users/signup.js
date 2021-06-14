@@ -1,4 +1,4 @@
-const { user, store, tag } = require('../../models');
+const { user, store, item, tag, tag_store } = require('../../models');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
 dotenv.config();
@@ -10,9 +10,11 @@ module.exports = async (req, res) => {
         if (!email || !password || !nickname) {
             return res.status(422).send({ message: "fill in blank" })
         }
-        // if (!storename && !address && !phone && !tagname) {
-        //     return res.status(422).send({ message: "회원 가입에 필요한 정보를 모두 입력 부탁드립니다." })
-        // }
+        
+        if (tagname) {
+            return res.status(422).send({ message: "태그는 사업자만 등록 가능합니다." })
+        }
+
         await user.findOne({
             where: { email }
         })
@@ -44,11 +46,12 @@ module.exports = async (req, res) => {
             else {
                 const storeInfo = await store.create({ storename, address, phone })
                 const storeId = storeInfo.dataValues.id // 스토어 아이디 추출
-    
-                for (let el of tagname) {
+                const tagnameArr = tagname.split(',')
+
+                for (let el of tagnameArr) {
                     await tag.create({ tagname: el })
-                    const taginfo = await tag.findOne({ where: { tagname: el } })
-                    await tag_store.create({ storeId, tagId: taginfo.dataValues.id })
+                    const tagInfo = await tag.findOne({ where: { tagname: el } })
+                    await tag_store.create({ storeId, tagId: tagInfo.dataValues.id })
                 }
     
                 await user.create({ email, password, nickname, storeId })
@@ -61,4 +64,3 @@ module.exports = async (req, res) => {
         })
     }
 }
-

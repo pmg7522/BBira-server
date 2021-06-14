@@ -1,4 +1,4 @@
-const { user, store, tag } = require('../../models');
+const { user, store, item, tag, tag_store } = require('../../models');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
 dotenv.config();
@@ -21,12 +21,19 @@ module.exports = async (req, res) => {
 
             const storeId = data.storeId
             const storeInfo = await store.findOne({ where: { id: storeId }})
-            const tagInfo = await tag.findOne({ where: { tagname: el } })
     
             const { nickname, email } = data
             const { storename, phone, address } = storeInfo.dataValues
-            const { tagname } = tagInfo.dataValues
-            
+
+            const alltagIdInfo = await tag_store.findAll({ where: { storeId: data.storeId } })
+            const tagsId = alltagIdInfo.map(el => el.dataValues.tagId)
+    
+            const tagname = [];
+            for (let el of tagsId) {
+                let taginfo = await tag.findOne({ where: { id: el } })
+                tagname.push(taginfo.dataValues.tagname)
+            }
+
             return res.status(200).send({ 
                 "message": "유저 정보 여깃어 !", 
                 "data": { nickname, email, storename, phone, address, tagname }

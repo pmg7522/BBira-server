@@ -27,8 +27,8 @@ module.exports = async (req, res) => {
         const { storename, phone } = storeinfo.dataValues
 
         const alltagIdinfo = await tag_store.findAll({ where: { storeId: data.storeId } })
-
         const tagsId = alltagIdinfo.map(el => el.dataValues.tagId)
+
         const tagname = [];
         for (let el of tagsId) {
             let taginfo = await tag.findOne({ where: { id: el } })
@@ -44,4 +44,3 @@ module.exports = async (req, res) => {
     }
     res.status(500).send({ "message": "Internal Server Error" })
 }
-
