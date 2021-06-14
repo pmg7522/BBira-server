@@ -3,11 +3,13 @@ const cors = require("cors");
 const https = require('https');
 const fs = require('fs');
 const controllers = require("./controllers");
+const { sequelize } = require('./models');
 require('dotenv').config()
 // const session = require('express-session');
 const cookieParser = require("cookie-parser");
 
 const app = express();
+sequelize.sync();
 
 app.use(express.json())
 app.use(cors({
@@ -49,4 +51,3 @@ let server;
   server = app.listen(port,() => {
     console.log(`http 서버가 ${port}번에서 작동중입니다.`);
   })
-// }

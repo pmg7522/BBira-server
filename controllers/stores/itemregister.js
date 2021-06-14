@@ -9,9 +9,10 @@ module.exports = async (req, res) => {
     if (!authorization) { 
         return res.status(401).send({ "message": 'invalid access token'})
     }
-    
+    console.log(authorization)
     const token = authorization.split(' ')[1];
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
+    const storeInfo = await store.findOne({ where: { id: data.id }});
 
     const { itemname, itemphoto, itemdesc, itemprice } = req.body;
 
@@ -19,7 +20,7 @@ module.exports = async (req, res) => {
         return res.status(422).send({ message: "fill in blank" })
     };
     
-    const storeId = data.dataValues.id;
+    const storeId = storeInfo.dataValues.id;
     await item.create({ itemname, itemphoto, itemdesc, itemprice, store_id: storeId });
     return res.status(201).send({ "message": "register successed" });
 

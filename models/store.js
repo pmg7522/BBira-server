@@ -11,12 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      store.hasOne(models.user, { foreignKey:'store_id' })
     }
   };
   store.init({
-    phone: DataTypes.STRING,
     storename: DataTypes.STRING,
-    address: DataTypes.STRING
+    adress: DataTypes.STRING,
+    phone: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'store',
