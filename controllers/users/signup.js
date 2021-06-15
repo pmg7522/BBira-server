@@ -1,6 +1,7 @@
 const { user, store, item, tag, tag_store } = require('../../models');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
+const crypto = require('crypto');
 dotenv.config();
 
 module.exports = async (req, res) => {
@@ -22,7 +23,8 @@ module.exports = async (req, res) => {
             }
             const storeInfo = await store.create({ storename, address, phone })
             const storeId = storeInfo.dataValues.id
-            await user.create({ email, password, nickname, storeId })
+            const hash = crypto.createHmac('sha256', process.env.SALT).update(password).digest('hex');
+            await user.create({ email, password: hash, nickname, storeId })
             return res.status(201).send({ "message": "signup successed" })
         })
         .catch(err => {
@@ -53,8 +55,8 @@ module.exports = async (req, res) => {
                     const taginfo = await tag.findOne({ where: { tagname: el } })
                     await tag_store.create({ storeId, tagId: taginfo.dataValues.id })
                 }
-    
-                await user.create({ email, password, nickname, storeId })
+                const hash = crypto.createHmac('sha256', process.env.SALT).update(password).digest('hex');
+                await user.create({ email, password: hash, nickname, storeId })
                 res.status(201).send({ "message": "signup successed" })
             }
         })
