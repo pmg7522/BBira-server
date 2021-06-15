@@ -6,10 +6,6 @@ dotenv.config();
 module.exports = async (req, res) => {
     const { nickname, phone, address, storename, password, tagname } = req.body
     // tagname = "tag1,tag2"로 들어온다. split(',')
-    if (!nickname || !phone || !address || !storename || !password) {
-        return res.status(422).send({ "message": "Fill in blank" })
-    }
-
     const authorization = req.headers['authorization'];
     
     if (!authorization) { 
@@ -57,9 +53,11 @@ module.exports = async (req, res) => {
         tags.push(tagB)
       }
 
+      const tagStr = tags.map(el => el.dataValues.tagname).join(",")
+
       return res.status(205).send({ 
           message: "userinfo Fixed", 
-          data: { ...newUserInfo.dataValues, ...newStoreInfo.dataValues, tags }
+          data: { user: newUserInfo.dataValues, store: newStoreInfo.dataValues, tags: tagStr }
       })
     }
     else {

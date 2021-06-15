@@ -6,6 +6,10 @@ module.exports = {
     userinfo: require('./users/userinfo'),
 
     fixuserinfo: require('./users/fixuserinfo'),
+
+    kakaologin: require('./users/kakaologin'),
+
+    githublogin: require('./users/githublogin'),
     
     logout: require('./users/logout'),
 

@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     }
     const token = authorization.split(' ')[1];
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
-    const tagId = await tag_store.findAll({ where: { storId: data.id }})
+    const tagId = await tag_store.findAll({ where: { storeId: data.id }})
     const tagsInfo = tagId.map(el => el.dataValues.tagId)
 
     const joinId = await tag_store.findAll({ where: { storeId: data.storeId }})
