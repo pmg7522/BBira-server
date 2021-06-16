@@ -16,13 +16,9 @@ module.exports = async (req, res) => {
         return res.status(404).send({ data: null, message: "데이터에 없는 유저입니다." })
     }
     
-    const { itemname, itemphoto, itemdesc, itemprice } = req.body;
+    const { itemname, itemdesc, itemprice } = req.body;
 
-    if (!itemname || !itemphoto || !itemdesc || !itemprice) {
-        return res.status(422).send({ message: "fill in blank" })
-    };
-    
-    await item.create({ itemname, itemphoto, itemdesc, itemprice, storeId: data.storeId });
+    await item.create({ itemname, itemphoto: '/uploads/'+req.file.filename, itemdesc, itemprice, storeId: data.storeId });
     return res.status(201).send({ "message": "item register successed" });
 
     return res.status(500).send({ message: "Internal Server Error" });

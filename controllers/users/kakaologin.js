@@ -39,7 +39,12 @@ module.exports = (req, res) => {
               kakaoUserInfo.email = response.data.kakao_account.email;
               kakaoUserInfo.nickname = response.data.kakao_account.profile.nickname;
             }
-            return res.status(200).send({ user: kakaoUserInfo })
+            return res
+            .status(200)
+            .cookie("refreshToken", refresh_token, {
+              httpOnly: true
+            })
+            .send({ user: kakaoUserInfo, accessToken: access_token })
             // const userInfo = await user.findOne({
             //   where: { email: response.data.kakao_account.email },
             // });

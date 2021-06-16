@@ -7,6 +7,8 @@ require('dotenv').config()
 // const session = require('express-session');
 const cookieParser = require("cookie-parser");
 const models = require('./models');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 
 const app = express();
@@ -45,14 +47,13 @@ app.get("/logout", controllers.logout);
 app.get("/dropuser", controllers.dropuser);
 app.get("/userinfo", controllers.userinfo);
 
-
 // stores //
-app.post("/fixiteminfo", controllers.fixiteminfo);
-app.post("/itemregister", controllers.itemregister);
-app.post("/dropitem", controllers.dropitem);
-app.get("/allstore", controllers.allstore);
-app.get("/mystore", controllers.mystore);
+app.post("/fixiteminfo", upload.single('itemphoto'), controllers.fixiteminfo);
+app.post("/itemregister", upload.single('itemphoto'), controllers.itemregister);
+app.get("/allstore", upload.single('itemphoto'), controllers.allstore);
+app.get("/mystore", upload.single('itemphoto'), controllers.mystore);
 
+app.post("/dropitem", controllers.dropitem);
 
 let server;
 // if(fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")){

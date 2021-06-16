@@ -17,8 +17,8 @@ module.exports = async (req, res) => {
     }
     else {
         // 원래 아이템 이름 필요 
-        const { id, itemname, itemphoto, itemdesc, itemprice } = req.body;
-        await item.update({ itemname, itemphoto, itemdesc, itemprice }, { where: { id }})
+        const { id, itemname, itemdesc, itemprice } = req.body;
+        await item.update({ itemname, itemphoto: `/${req.file.path}`, itemdesc, itemprice }, { where: { id }})
         res.status(205).send({ "message": 'item information is fixed'})
     }
 }

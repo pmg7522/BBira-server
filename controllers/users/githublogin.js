@@ -35,7 +35,12 @@ module.exports = async (req, res) => {
           githubUserInfo.email = "";
           githubUserInfo.nickname = response.data.login;
         }
-        return res.status(200).send({ user: githubUserInfo });
+        return res
+        .status(200)
+        // .cookie("refreshToken", refresh_token, {
+        //   httpOnly: true
+        // })
+        .send({ user: githubUserInfo, accessToken: access_token });
       })
   })
   .catch((e) => console.log(e));

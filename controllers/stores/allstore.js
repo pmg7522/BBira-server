@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
             tags.push(tagInfo.dataValues)
         }
         
-        const allitemsInfo = await item.findAll({ where: { storeId: shop.id } })
+        const allitemsInfo = await item.findAll({ where: { storeId: shop.id }})
         const items = allitemsInfo.map(el => el.dataValues)
 
         result.push({ shop, tags, items })
