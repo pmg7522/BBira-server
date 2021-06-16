@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
     
     const { itemname, itemdesc, itemprice } = req.body;
 
-    await item.create({ itemname, itemphoto: '/uploads/'+req.file.filename, itemdesc, itemprice, storeId: data.storeId });
+    await item.create({ itemname, itemphoto: "/uploads/" + req.file.filename, itemdesc, itemprice, storeId: data.storeId });
     return res.status(201).send({ "message": "item register successed" });
 
     return res.status(500).send({ message: "Internal Server Error" });

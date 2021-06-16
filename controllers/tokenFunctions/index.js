@@ -3,10 +3,10 @@ const { sign, verify } = require("jsonwebtoken");
 
 module.exports = {
   generateAccessToken: (data) => {
-    return sign(data, process.env.ACCESS_SECRET, { expiresIn: "15s" });
+    return sign(data, process.env.ACCESS_SECRET, { expiresIn: "1h" });
   },
   generateRefreshToken: (data) => {
-    return sign(data, process.env.REFRESH_SECRET, { expiresIn: "30d" });
+    return sign(data, process.env.REFRESH_SECRET, { expiresIn: "2h" });
   },
   sendRefreshToken: (res, refreshToken) => {
     res.cookie("refreshToken", refreshToken, {
@@ -17,7 +17,7 @@ module.exports = {
     return res.json({ data: { accessToken }, message: "ok" });
   },
   resendAccessToken: (res, accessToken, data) => {
-    return res.json({ data: { accessToken, userInfo: data }, message: "ok" });
+    return res.json({ data: { accessToken, user: data }, message: "Token 재발급 완료" });
   },
   isAuthorized: (req) => {
     const authorization = req.headers["authorization"];
@@ -34,7 +34,6 @@ module.exports = {
     try {
       return verify(refreshToken, process.env.REFRESH_SECRET);
     } catch (err) {
-      // return null if refresh token is not valid
       return null;
     }
   },

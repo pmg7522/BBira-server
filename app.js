@@ -1,15 +1,14 @@
 const express = require('express');
 const cors = require("cors");
-const https = require('https');
-const fs = require('fs');
 const controllers = require("./controllers");
 require('dotenv').config()
-// const session = require('express-session');
+const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const models = require('./models');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
 
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
+const fs = require("fs") 
 
 const app = express();
 
@@ -25,11 +24,14 @@ const app = express();
 //   });
 
 
+app.use("/itemregister", express.static("./uploads"))
+app.use("/allstore", express.static("./uploads"))
+app.use("/mystore", express.static("./uploads"))
 
 app.use(express.json())
 app.use(cors({
     origin: "http://localhost:3000", // 배포환경 : s3 도메인
-    methods: ["GET", "POST", "OPTIONS"],
+    methods: ["GET", "POST", "OPTIONS", "DELETE"],
     credentials: true
 }))
 
@@ -41,11 +43,12 @@ const port = 3000; //배포환경: 80
 app.post("/fixuserinfo", controllers.fixuserinfo); // tagname: arr, nickname: str, email: str, password: str, phone: str, address: str, storename: str
 app.post("/signup", controllers.signup); // tagname: arr, nickname: str, email: str, password: str, phone: str, address: str, storename: str
 app.post("/login", controllers.login); // email: str, password: str
-app.post("/kakaologin", controllers.kakaologin);
-app.post("/githublogin", controllers.githublogin);
 app.get("/logout", controllers.logout);
 app.get("/dropuser", controllers.dropuser);
 app.get("/userinfo", controllers.userinfo);
+app.get("/refreshtokenrequest", controllers.refreshtokenrequest);
+app.post("/kakaologin", controllers.kakaologin);
+app.post("/githublogin", controllers.githublogin);
 
 // stores //
 app.post("/fixiteminfo", upload.single('itemphoto'), controllers.fixiteminfo);

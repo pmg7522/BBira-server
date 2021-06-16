@@ -11,8 +11,8 @@ module.exports = async (req, res) => {
     }
     const token = authorization.split(' ')[1];
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
-    const tagId = await tag_store.findAll({ where: { storeId: data.id }})
-    const tagsInfo = tagId.map(el => el.dataValues.tagId)
+    // const tagId = await tag_store.findAll({ where: { storeId: data.id }})
+    // const tagsInfo = tagId.map(el => el.dataValues.tagId)
 
     const joinId = await tag_store.findAll({ where: { storeId: data.storeId }})
     const joinInfo = joinId.map(el => el.dataValues.tagId)
@@ -29,5 +29,4 @@ module.exports = async (req, res) => {
     return res.status(205).send({ "message": '회원탈퇴 완료' })
 
     return res.status(500).send({ "message": "Internal Server Error" })
-
 }

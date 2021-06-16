@@ -23,5 +23,7 @@ module.exports = {
 
     allstore: require('./stores/allstore'),
 
-    mystore: require('./stores/mystore')
+    mystore: require('./stores/mystore'), 
+    
+    refreshtokenrequest: require("./users/refreshTokenRequest")
 }

@@ -1,6 +1,5 @@
 const axios = require("axios");
 const { user } = require("../../models");
-const jwt = require('jsonwebtoken');
 
 module.exports = (req, res) => {
     const KAKAO_CLIENT_ID = process.env.KAKAO_CLIENT_ID;
@@ -25,35 +24,29 @@ module.exports = (req, res) => {
       .then((response) => {
         const { access_token, token_type, refresh_token } = response.data;
         const KAKAO_USERINFO_URL = `https://kapi.kakao.com/v2/user/me`;
-
         return axios
-          .get(KAKAO_USERINFO_URL, {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-              "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-              accept: "application/json",
-            },
+        .get(KAKAO_USERINFO_URL, {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+            accept: "application/json",
+          },
+        })
+        .then(async (response) => {
+          if (response.data.kakao_account) {
+            kakaoUserInfo.email = response.data.kakao_account.email;
+            kakaoUserInfo.nickname = response.data.kakao_account.profile.nickname;
+          }
+          const userInfo = await user.findOne({
+            where: { email: response.data.kakao_account.email },
+          });
+          return res.
+          status(200)
+          .cookie("refreshToken", refresh_token, {
+            httpOnly: true
           })
-          .then(async (response) => {
-            if (response.data.kakao_account) {
-              kakaoUserInfo.email = response.data.kakao_account.email;
-              kakaoUserInfo.nickname = response.data.kakao_account.profile.nickname;
-            }
-            return res
-            .status(200)
-            .cookie("refreshToken", refresh_token, {
-              httpOnly: true
-            })
-            .send({ user: kakaoUserInfo, accessToken: access_token })
-            // const userInfo = await user.findOne({
-            //   where: { email: response.data.kakao_account.email },
-            // });
-
-            // if(!userInfo){
-            //   return res.status(200).send({ user: userInfo.dataValues });
-            // }
-            // delete userInfo.dataValues.password
-          })
-      })
-      .catch((e) => console.log(e));
+          .send({ user: kakaoUserInfo, accessToken: access_token })
+        })
+    })
+    .catch((e) => console.log(e));
 };

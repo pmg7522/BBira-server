@@ -18,24 +18,26 @@ module.exports = async (req, res) => {
         }
         else {
             delete data.password
-            // 유저정보, 스토어정보, 태그정보
-            // result = { storeinfo, userinfo, taginfo }
+
             const storeId = data.storeId
             const storeInfo = await store.findOne({ where: { id: storeId }})
-            const userInfo = await user.findOne({ where: { id: data.id } })
-            // console.log(nickname, email, storename, phone, address)
+
             const storeInfoData = storeInfo.dataValues
             const alltagIdinfo = await tag_store.findAll({ where: { storeId: data.storeId } })
             const tagsId = alltagIdinfo.map(el => el.dataValues.tagId)
-    
+            
             const tags = [];
             for (let el of tagsId) {
                 let taginfo = await tag.findOne({ where: { id: el } })
                 tags.push(taginfo.dataValues)
             }
+
+            const userInfo = await user.findOne({ where: { id: data.id } })
+            const tagsStr = tags.join(",")
+            
             return res.status(200).send({ 
                 "message": "유저 정보 여깃어 !", 
-                "data": { user: userInfo.dataValues, store: storeInfoData, tags }
+                "data": { user: userInfo.dataValues, store: storeInfoData, tags: tagsStr }
             });
         }
     }

@@ -1,8 +1,9 @@
 const { user, store, tag, tag_store, item} = require('../../models');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
+const path = require('path')
 dotenv.config();
-
+const fs = require("fs") 
 
 
 module.exports = async (req, res) => {
@@ -13,15 +14,22 @@ module.exports = async (req, res) => {
     }
 
     const token = authorization.split(' ')[1];
-    const data = jwt.verify(token, process.env.ACCESS_SECRET); // 해당 유저의 user 정보
+    const data = jwt.verify(token, process.env.ACCESS_SECRET); 
     if (!data) {
         return res.status(404).send({ data: null, message: "데이터에 없는 유저입니다." })
     }
     else {
-      // 해당 로그인한 사람의 item, store, tag테이블에 접근하여 데이터를 보내준다. 
+
         const allItemsInfo = await item.findAll({ where: { storeId: data.storeId } })
-        const items = allItemsInfo.map(el => el.dataValues)
-        
+        const items = allItemsInfo.map(el => {
+            let result = fs.readFileSync(`.${el.dataValues.itemphoto}`)
+            let b = imageDataUri.encode(result, "jpg")
+            return {
+              ...el.dataValues,
+              itemphoto: b
+            }
+        })
+
         const storeInfo = await store.findOne({ where: { id: data.storeId } })
         const stores = storeInfo.dataValues
 

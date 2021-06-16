@@ -1,6 +1,7 @@
 const { user, store, item, tag, tag_store } = require('../../models');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
+
 dotenv.config();
 
 module.exports = async (req, res) => {
@@ -16,9 +17,10 @@ module.exports = async (req, res) => {
         return res.status(404).send({ data: null, message: "데이터에 없는 유저입니다." })
     }
     else {
-        // 원래 아이템 이름 필요 
-        const { id, itemname, itemdesc, itemprice } = req.body;
-        await item.update({ itemname, itemphoto: `/${req.file.path}`, itemdesc, itemprice }, { where: { id }})
+        const { id, itemname, itemphoto, itemdesc, itemprice } = req.body;
+        await item.update({ itemname, itemphoto, itemdesc, itemprice }, { where: { id }})
         res.status(205).send({ "message": 'item information is fixed'})
     }
+
+    res.status(500).send({ "message": "Internal Server Error" })
 }
