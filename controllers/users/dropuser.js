@@ -1,4 +1,4 @@
-const { user, store } = require('../../models');
+const { user, store, item, tag, tag_store } = require('../../models');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
 dotenv.config();
@@ -9,19 +9,24 @@ module.exports = async (req, res) => {
     if (!authorization) { 
         return res.status(401).send({ "message": 'invalid access token'})
     }
-    console.log(authorization)
     const token = authorization.split(' ')[1];
     const data = jwt.verify(token, process.env.ACCESS_SECRET);
-    const userInfo = await user.findOne({ where: { id: data.id }})
+    // const tagId = await tag_store.findAll({ where: { storeId: data.id }})
+    // const tagsInfo = tagId.map(el => el.dataValues.tagId)
 
-    if (userInfo) {
-        const storeId = userInfo.dataValues.store_id
-        await store.destroy({ where: { id: storeId }})
-        await user.destroy({ where: { id: data.id }})
-        res.status(205).send({ "message": '재가입은 유료입니다.' })
-    }
-    else {
-        res.status(500).send({ "message": "Internal Server Error" })
+    const joinId = await tag_store.findAll({ where: { storeId: data.storeId }})
+    const joinInfo = joinId.map(el => el.dataValues.tagId)
+
+    for(let el of joinInfo){
+        await tag.destroy({ where: { id: el }})
     }
 
+    await user.destroy({ where: { id: data.id }})
+    await store.destroy({ where: { id: data.storeId }})
+    await item.destroy({ where: { storeId: data.storeId }})
+    await tag_store.destroy({ where: { storeId: data.storeId }})
+
+    return res.status(205).send({ "message": '회원탈퇴 완료' })
+
+    return res.status(500).send({ "message": "Internal Server Error" })
 }

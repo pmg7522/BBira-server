@@ -1,18 +1,30 @@
 const express = require('express');
 const cors = require("cors");
-const https = require('https');
-const fs = require('fs');
 const controllers = require("./controllers");
 require('dotenv').config()
-// const session = require('express-session');
 const cookieParser = require("cookie-parser");
+const models = require('./models');
+
 
 const app = express();
+
+// models.sequelize.sync()
+//   .then(() => {
+//     console.log('✓ DB connection success.');
+//     console.log('  Press CTRL-C to stop\n');
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     console.log('✗ DB connection error. Please make sure DB is running.');
+//     process.exit();
+//   });
+
+
 
 app.use(express.json())
 app.use(cors({
     origin: "http://localhost:3000", // 배포환경 : s3 도메인
-    methods: ["GET", "POST", "OPTIONS"],
+    methods: ["GET", "POST", "OPTIONS", "DELETE"],
     credentials: true
 }))
 
@@ -21,19 +33,23 @@ app.use(cookieParser());
 const port = 3000; //배포환경: 80
 
 // users //
-app.post("/fixuserinfo", controllers.fixuserinfo); // email, nickname, address, storename, phone
-app.post("/signup", controllers.signup); // email, nickname, address, storename, phone, password
-app.post("/login", controllers.login); // email, password
+app.post("/fixuserinfo", controllers.fixuserinfo); // tagname: arr, nickname: str, email: str, password: str, phone: str, address: str, storename: str
+app.post("/signup", controllers.signup); // tagname: arr, nickname: str, email: str, password: str, phone: str, address: str, storename: str
+app.post("/login", controllers.login); // email: str, password: str
 app.get("/logout", controllers.logout);
-app.get("/dropuser", controllers.dropuser); // email
+app.get("/dropuser", controllers.dropuser);
 app.get("/userinfo", controllers.userinfo);
+app.get("./refreshTokenRequest", controllers.refreshTokenRequest)
+app.post("/kakaologin", controllers.kakaologin);
+app.post("/githublogin", controllers.githublogin);
 
 // stores //
-app.get("/fixiteminfo", controllers.fixiteminfo);
-app.get("/dropitem", controllers.dropitem);
+app.post("/fixiteminfo", controllers.fixiteminfo);
+app.post("/itemregister", controllers.itemregister);
+app.post("/dropitem", controllers.dropitem);
 app.get("/allstore", controllers.allstore);
-app.get("/itemregister", controllers.itemregister);
 app.get("/mystore", controllers.mystore);
+
 
 
 let server;
@@ -50,4 +66,3 @@ let server;
     console.log(`http 서버가 ${port}번에서 작동중입니다.`);
   })
 // }
-
