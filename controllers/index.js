@@ -25,5 +25,5 @@ module.exports = {
 
     githublogin: require('./users/githublogin'),
 
-    refreshTokenRequest: require("./users/refreshTokenRequest")
+    refreshtokenrequest: require("./users/refreshTokenRequest")
 }

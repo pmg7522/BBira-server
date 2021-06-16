@@ -2,9 +2,13 @@ const express = require('express');
 const cors = require("cors");
 const controllers = require("./controllers");
 require('dotenv').config()
+const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const models = require('./models');
 
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
+const fs = require("fs") 
 
 const app = express();
 
@@ -20,6 +24,9 @@ const app = express();
 //   });
 
 
+app.use("/itemregister", express.static("./uploads"))
+app.use("/allstore", express.static("./uploads"))
+app.use("/mystore", express.static("./uploads"))
 
 app.use(express.json())
 app.use(cors({
@@ -39,16 +46,16 @@ app.post("/login", controllers.login); // email: str, password: str
 app.get("/logout", controllers.logout);
 app.get("/dropuser", controllers.dropuser);
 app.get("/userinfo", controllers.userinfo);
-app.get("./refreshTokenRequest", controllers.refreshTokenRequest)
+app.get("/refreshtokenrequest", controllers.refreshtokenrequest)
 app.post("/kakaologin", controllers.kakaologin);
 app.post("/githublogin", controllers.githublogin);
 
 // stores //
-app.post("/fixiteminfo", controllers.fixiteminfo);
-app.post("/itemregister", controllers.itemregister);
+app.post("/fixiteminfo", upload.single("userfile"), controllers.fixiteminfo);
+app.post("/itemregister", upload.single("userfile"), controllers.itemregister);
 app.post("/dropitem", controllers.dropitem);
-app.get("/allstore", controllers.allstore);
-app.get("/mystore", controllers.mystore);
+app.get("/allstore", upload.single("userfile"), controllers.allstore);
+app.get("/mystore", upload.single("userfile"), controllers.mystore);
 
 
 

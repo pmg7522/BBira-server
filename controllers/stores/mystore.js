@@ -1,7 +1,10 @@
 const { user, store, tag, tag_store, item} = require('../../models');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
+const path = require('path')
 dotenv.config();
+const fs = require("fs") 
+
 
 module.exports = async (req, res) => {
     const authorization = req.headers['authorization'];
@@ -20,6 +23,15 @@ module.exports = async (req, res) => {
         const allItemsInfo = await item.findAll({ where: { storeId: data.storeId } })
         const items = allItemsInfo.map(el => el.dataValues)
         
+        const items = allitemsInfo.map(el => {
+            let result = fs.readFileSync(`.${el.dataValues.itemphoto}`)
+            let b = imageDataUri.encode(result, "jpg")
+            return {
+              ...el.dataValues,
+              itemphoto: b
+            }
+        })
+
         const storeInfo = await store.findOne({ where: { id: data.storeId } })
         const stores = storeInfo.dataValues
 
@@ -27,6 +39,8 @@ module.exports = async (req, res) => {
         const tagsId = alltagIdinfo.map(el => el.dataValues.tagId)
 
         
+
+
         const tags = [];
         for (let el of tagsId) {
             let taginfo = await tag.findOne({ where: { id: el } })

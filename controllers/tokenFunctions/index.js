@@ -17,7 +17,7 @@ module.exports = {
     return res.json({ data: { accessToken }, message: "ok" });
   },
   resendAccessToken: (res, accessToken, data) => {
-    return res.json({ data: { accessToken, userInfo: data }, message: "Token 재발급 완료" });
+    return res.json({ data: { accessToken, user: data }, message: "Token 재발급 완료" });
   },
   isAuthorized: (req) => {
     const authorization = req.headers["authorization"];
